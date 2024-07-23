@@ -2,6 +2,8 @@ package com.pokemonreview.api.service;
 
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,9 +48,33 @@ public class PokemonServiceTest {
 
     when(pokemonRepository.findAll(Mockito.any(Pageable.class))).thenReturn(pokemons);
 
-    PokemonResponse savePokemon = pokemonService.getAllPokemon(1, 10);
+    PokemonResponse savedPokemon = pokemonService.getAllPokemon(1, 10);
 
-    Assertions.assertThat(savePokemon).isNotNull();
+    Assertions.assertThat(savedPokemon).isNotNull();
+  }
+
+  @Test
+  public void PokemonService_GetPokemonById_ReturnsPokemonDto() {
+    Pokemon pokemon = Pokemon.builder().name("Pikachu").type("Electric").build();
+
+    when(pokemonRepository.findById(1)).thenReturn(Optional.ofNullable(pokemon));
+
+    PokemonDto savedPokemon = pokemonService.getPokemonById(1);
+
+    Assertions.assertThat(savedPokemon).isNotNull();
+  }
+
+  @Test
+  public void PokemonService_UpdatePokemon_ReturnsPokemonDto() {
+    Pokemon pokemon = Pokemon.builder().name("Pikachu").type("Electric").build();
+    PokemonDto pokemonDto = PokemonDto.builder().name("Pikachu").type("Electric").build();
+
+    when(pokemonRepository.findById(1)).thenReturn(Optional.ofNullable(pokemon));
+    when(pokemonRepository.save(Mockito.any(Pokemon.class))).thenReturn(pokemon);
+
+    PokemonDto savedPokemon = pokemonService.updatePokemon(pokemonDto, 1);
+
+    Assertions.assertThat(savedPokemon).isNotNull();
   }
 
 }
