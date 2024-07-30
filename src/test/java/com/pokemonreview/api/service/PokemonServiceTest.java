@@ -1,7 +1,5 @@
 package com.pokemonreview.api.service;
 
-import static org.mockito.Mockito.when;
-
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
@@ -34,7 +32,7 @@ public class PokemonServiceTest {
     Pokemon pokemon = Pokemon.builder().name("Pikachu").type("Electric").build();
     PokemonDto pokemonDto = PokemonDto.builder().name("Pikachu").type("Electric").build();
 
-    when(pokemonRepository.save(Mockito.any(Pokemon.class))).thenReturn(pokemon);
+    Mockito.when(pokemonRepository.save(Mockito.any(Pokemon.class))).thenReturn(pokemon);
 
     PokemonDto savedPokemon = pokemonService.createPokemon(pokemonDto);
 
@@ -46,7 +44,7 @@ public class PokemonServiceTest {
     @SuppressWarnings("unchecked")
     Page<Pokemon> pokemons = Mockito.mock(Page.class);
 
-    when(pokemonRepository.findAll(Mockito.any(Pageable.class))).thenReturn(pokemons);
+    Mockito.when(pokemonRepository.findAll(Mockito.any(Pageable.class))).thenReturn(pokemons);
 
     PokemonResponse savedPokemon = pokemonService.getAllPokemon(1, 10);
 
@@ -57,7 +55,7 @@ public class PokemonServiceTest {
   public void PokemonService_GetPokemonById_ReturnsPokemonDto() {
     Pokemon pokemon = Pokemon.builder().name("Pikachu").type("Electric").build();
 
-    when(pokemonRepository.findById(1)).thenReturn(Optional.ofNullable(pokemon));
+    Mockito.when(pokemonRepository.findById(1)).thenReturn(Optional.ofNullable(pokemon));
 
     PokemonDto savedPokemon = pokemonService.getPokemonById(1);
 
@@ -69,8 +67,8 @@ public class PokemonServiceTest {
     Pokemon pokemon = Pokemon.builder().name("Pikachu").type("Electric").build();
     PokemonDto pokemonDto = PokemonDto.builder().name("Pikachu").type("Electric").build();
 
-    when(pokemonRepository.findById(1)).thenReturn(Optional.ofNullable(pokemon));
-    when(pokemonRepository.save(Mockito.any(Pokemon.class))).thenReturn(pokemon);
+    Mockito.when(pokemonRepository.findById(1)).thenReturn(Optional.ofNullable(pokemon));
+    Mockito.when(pokemonRepository.save(Mockito.any(Pokemon.class))).thenReturn(pokemon);
 
     PokemonDto savedPokemon = pokemonService.updatePokemon(pokemonDto, 1);
 
