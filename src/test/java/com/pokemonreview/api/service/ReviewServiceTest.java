@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.pokemonreview.api.dto.PokemonDto;
 import com.pokemonreview.api.dto.ReviewDto;
 import com.pokemonreview.api.models.Pokemon;
 import com.pokemonreview.api.models.Review;
@@ -36,12 +35,11 @@ public class ReviewServiceTest {
   private Pokemon pokemon;
   private Review review;
   private ReviewDto reviewDto;
-  private PokemonDto pokemonDto;
+  // private PokemonDto pokemonDto;
 
   @BeforeEach
   public void init() {
     pokemon = Pokemon.builder().name("Pikachu").type("Electric").build();
-    pokemonDto = PokemonDto.builder().name("Pikachu").type("Electric").build();
     review = Review.builder().title("Title").content("Content").stars(5).build();
     reviewDto = ReviewDto.builder().title("Title").content("Content").stars(5).build();
   }
@@ -69,7 +67,48 @@ public class ReviewServiceTest {
 
   @Test
   public void ReviewService_GetReviewById_ReturnReviewDto() {
+    int reviewId = 1;
+    int pokemonId = 1;
 
+    review.setPokemon(pokemon);
+
+    Mockito.when(pokemonRepository.findById(pokemonId)).thenReturn(Optional.of(pokemon));
+    Mockito.when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
+
+    ReviewDto reviewReturn = reviewService.getReviewById(reviewId, pokemonId);
+
+    Assertions.assertThat(reviewReturn).isNotNull();
+  }
+
+  @Test
+  public void ReviewService_UpdatePokemon_ReturnReviewDto() {
+    int pokemonId = 1;
+    int reviewId = 1;
+
+    pokemon.setReviews(Arrays.asList(review));
+    review.setPokemon(pokemon);
+
+    Mockito.when(pokemonRepository.findById(pokemonId)).thenReturn(Optional.of(pokemon));
+    Mockito.when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
+    Mockito.when(reviewRepository.save(review)).thenReturn(review);
+
+    ReviewDto updateReturn = reviewService.updateReview(pokemonId, reviewId, reviewDto);
+
+    Assertions.assertThat(updateReturn).isNotNull();
+  }
+
+  @Test
+  public void ReviewService_DeletePokemonById_ReturnVoid() {
+    int pokemonId = 1;
+    int reviewId = 1;
+
+    pokemon.setReviews(Arrays.asList(review));
+    review.setPokemon(pokemon);
+
+    Mockito.when(pokemonRepository.findById(pokemonId)).thenReturn(Optional.of(pokemon));
+    Mockito.when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
+
+    reviewService.deleteReview(pokemonId, reviewId);
   }
 
 }

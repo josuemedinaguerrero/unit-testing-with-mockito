@@ -21,6 +21,7 @@ public class Pokemon {
     private String name;
     private String type;
 
+    @Builder.Default
     @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<Review>();
 }
