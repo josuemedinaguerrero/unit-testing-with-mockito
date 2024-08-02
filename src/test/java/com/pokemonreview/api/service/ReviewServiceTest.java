@@ -35,7 +35,6 @@ public class ReviewServiceTest {
   private Pokemon pokemon;
   private Review review;
   private ReviewDto reviewDto;
-  // private PokemonDto pokemonDto;
 
   @BeforeEach
   public void init() {
